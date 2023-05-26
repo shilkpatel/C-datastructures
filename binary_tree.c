@@ -2,27 +2,12 @@
 #include <stdlib.h>
 
 
-typedef struct 
+typedef struct tree
 {
     int data;
-    struct tree_node *left;
-    struct tree_node *right;
+    struct tree *left;
+    struct tree *right;
 }tree_node;
-
-
-int main()
-{
-    tree_node test_node;
-    test_node.data=5;
-    test_node.left=NULL;
-    test_node.right=NULL;
-    add_tree_node(&test_node,3);
-    add_tree_node(&test_node,6);
-    add_tree_node(&test_node,2);
-    inorder(&test_node);
-    return 0;
-}
-
 
 void add_tree_node(tree_node *root,int data)
 {
@@ -70,4 +55,83 @@ void inorder(tree_node *root)
     {
         inorder(root->right);
     }
+}
+
+int height(tree_node *root)
+{
+    printf("a");
+    int *left_height=malloc(sizeof(int));
+    int *right_height=malloc(sizeof(int));
+    if(root->left==NULL)
+    {
+        (*left_height)=0;
+    }
+    else
+    {
+        (*left_height)=height(root->left);
+    }
+
+    if(root->right==NULL)
+    {
+        (*right_height)=0;
+    }
+    else
+    {
+        (*right_height)=height(root->right);
+    }
+
+    if((*left_height)>(*right_height))
+    {
+        return (*left_height)+1;
+    }
+    else
+    {
+        return (*right_height)+1;
+    }
+
+
+
+}
+
+int avl_height_balance(tree_node *root)
+{
+    return height(root->left)-height(root->right);
+}
+
+tree_node* rightRotation(tree_node *root)
+{
+    tree_node *B = malloc(sizeof(tree_node));
+    B=root->left;
+    //free(root->left)
+    root->left=B->right;
+    B->right=root;
+    return B;
+}
+
+tree_node* leftRotation(tree_node *root)
+{
+    tree_node *B=malloc(sizeof(tree_node));
+    B=root->right;
+    //free(root->right);
+    root->right=B->left;
+    B->left=root;
+}
+
+
+int main()
+{
+    tree_node test_node;
+    test_node.data=5;
+    test_node.left=NULL;
+    test_node.right=NULL;
+    add_tree_node(&test_node,3);
+    add_tree_node(&test_node,6);
+    add_tree_node(&test_node,2);
+    add_tree_node(&test_node,1);
+    inorder(&test_node);
+    printf("\n");
+    tree_node *rotation=rightRotation(&test_node);
+    inorder(rotation);
+    printf("%d",rotation->data);
+    return 0;
 }
