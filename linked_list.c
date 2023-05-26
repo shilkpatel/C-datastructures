@@ -19,7 +19,7 @@ int main()
     push(&start,5);
     push(&start,3);
     list_print(&start);
-    insert(&start,1,7);
+    delete(&start,1,99);
 
     list_print(&start);
 
@@ -150,11 +150,6 @@ void insert(node* head, int index, int data)
     }
 }
 
-
-
-
-
-
 void delete(node*head,int index,int data)
 {
     int counter=0;
@@ -163,17 +158,17 @@ void delete(node*head,int index,int data)
 
     if(index==0)
     {
-        nxt= (*current_node).next;// the current node
-        head=nxt;
+        // the current node
+        head=current_node->next;
     }
 
     while(1)
     {
         if(counter==index-1)
         {
-            node* next_node_pointer=(*current_node).next;
+            node* next_node_pointer=current_node->next;
             node next_node=*next_node_pointer;
-            (*current_node).next=next_node.next;
+            current_node->next=next_node.next;
             return;
         }
         else if ((*current_node).next==NULL)
